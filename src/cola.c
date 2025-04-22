@@ -1,0 +1,70 @@
+#include "cola.h"
+#include "src/lista.h"
+
+struct cola {
+	lista_t *lista;
+};
+
+cola_t *cola_crear() {
+	cola_t *cola = malloc(sizeof(cola_t));
+	if (!cola) {
+		return NULL;
+	}
+
+	cola->lista = lista_crear();
+	if (!cola->lista) {
+		free(cola);
+		return NULL;
+	}
+
+	return cola;
+}
+
+bool cola_encolar(cola_t *cola, void *elemento) {
+	if (!cola || !cola->lista) {
+		return false;
+	}
+
+	return lista_insertar(cola->lista, elemento);
+	}
+
+void *cola_desencolar(cola_t *cola) {
+	if (!cola || cola_vacia(cola)) {
+		return NULL;
+	}
+
+	return lista_sacar_de_posicion(cola->lista, 0);
+}
+
+bool cola_vacia(cola_t *cola) {
+	if (!cola || !cola->lista) {
+		return true;
+	}
+
+	return lista_tamanio(cola->lista) == 0;
+}
+
+size_t cola_tamanio(cola_t *cola) {
+	if (!cola || !cola->lista) {
+		return 0;
+	}
+
+	return lista_tamanio(cola->lista);
+}
+
+void *cola_frente(cola_t *cola) {
+	if (!cola || cola_vacia(cola)) {
+		return NULL;
+	}
+
+	return lista_obtener_elemento(cola->lista, 0);
+}
+
+void cola_destruir(cola_t *cola) {
+	if (!cola) {
+		return;
+	}
+
+	lista_destruir(cola->lista);
+	free(cola);
+}
