@@ -12,7 +12,7 @@ pila_t *pila_crear()
 		return NULL;
 	}
 
-	pila->lista = (lista_t *)lista_crear();
+	pila->lista = lista_crear();
 	if (!pila->lista) {
 		free(pila);
 		return NULL;

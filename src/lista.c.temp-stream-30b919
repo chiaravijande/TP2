@@ -1,4 +1,4 @@
-#include "lista.h"
+#include "src/lista.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -152,7 +152,7 @@ void *lista_sacar_de_posicion(lista_t *lista, int posicion)
 
 void *lista_sacar_elemento(lista_t *lista, void *elemento)
 {
-	if (!lista) {
+	if (!lista || !elemento) {
 		return NULL;
 	}
 
@@ -254,21 +254,6 @@ int lista_iterar(lista_t *lista, bool (*f)(void *, void *), void *contexto)
 	return invocaciones;
 }
 
-void lista_destruir(lista_t *lista)
-{
-	if (!lista)
-		return;
-
-	nodo_t *actual = lista->primero;
-	while (actual) {
-		nodo_t *siguiente = actual->proximo;
-		free(actual);
-		actual = siguiente;
-	}
-
-	free(lista);
-}
-
 struct lista_iterador *lista_iterador_crear(lista_t *lista)
 {
 	if (!lista) {
@@ -286,8 +271,7 @@ struct lista_iterador *lista_iterador_crear(lista_t *lista)
 	return iterador;
 }
 
-bool lista_iterador_quedan_elementos_por_recorrer(
-	struct lista_iterador *iterador)
+bool lista_iterador_quedan_elementos_por_recorrer(struct lista_iterador *iterador)
 {
 	if (!iterador || !iterador->nodo_actual) {
 		return false;
@@ -312,6 +296,21 @@ void *lista_iterador_obtener_elemento(struct lista_iterador *iterador)
 	}
 
 	return iterador->nodo_actual->dato;
+}
+
+void lista_destruir(lista_t *lista)
+{
+	if (!lista)
+		return;
+
+	nodo_t *actual = lista->primero;
+	while (actual) {
+		nodo_t *siguiente = actual->proximo;
+		free(actual);
+		actual = siguiente;
+	}
+
+	free(lista);
 }
 
 void lista_iterador_destruir(struct lista_iterador *iterador)

@@ -1,5 +1,5 @@
 #include "cola.h"
-#include "lista.h"
+#include "src/lista.h"
 
 struct cola {
 	lista_t *lista;
@@ -12,7 +12,7 @@ cola_t *cola_crear()
 		return NULL;
 	}
 
-	cola->lista = (lista_t *)lista_crear();
+	cola->lista = lista_crear();
 	if (!cola->lista) {
 		free(cola);
 		return NULL;

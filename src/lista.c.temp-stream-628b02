@@ -254,21 +254,6 @@ int lista_iterar(lista_t *lista, bool (*f)(void *, void *), void *contexto)
 	return invocaciones;
 }
 
-void lista_destruir(lista_t *lista)
-{
-	if (!lista)
-		return;
-
-	nodo_t *actual = lista->primero;
-	while (actual) {
-		nodo_t *siguiente = actual->proximo;
-		free(actual);
-		actual = siguiente;
-	}
-
-	free(lista);
-}
-
 struct lista_iterador *lista_iterador_crear(lista_t *lista)
 {
 	if (!lista) {
@@ -312,6 +297,21 @@ void *lista_iterador_obtener_elemento(struct lista_iterador *iterador)
 	}
 
 	return iterador->nodo_actual->dato;
+}
+
+void lista_destruir(lista_t *lista)
+{
+	if (!lista)
+		return;
+
+	nodo_t *actual = lista->primero;
+	while (actual) {
+		nodo_t *siguiente = actual->proximo;
+		free(actual);
+		actual = siguiente;
+	}
+
+	free(lista);
 }
 
 void lista_iterador_destruir(struct lista_iterador *iterador)
